@@ -1,0 +1,158 @@
+/*
+ * Wild Labs design tokens — CSS custom properties.
+ *
+ * Mirrors packages/tokens/src/*.ts. The TS objects are for logic (motion values
+ * passed to `motion`, glass tiers read by components); these variables are for
+ * styling. Keep them in step — the TS files carry the reasoning, this carries
+ * the runtime.
+ *
+ * Theme strategy: the light palette is defined on bare :root so it is always
+ * present. Dark redefines only what changes, under both a media query (guarded
+ * so an explicit light choice wins) and an explicit [data-theme="dark"].
+ */
+
+:root {
+  /* ---- neutral ramp (OKLCH, zero chroma) ---- */
+  --wl-ink-000: oklch(1 0 0);
+  --wl-ink-050: oklch(0.972 0 0);
+  --wl-ink-100: oklch(0.936 0 0);
+  --wl-ink-200: oklch(0.867 0 0);
+  --wl-ink-300: oklch(0.757 0 0);
+  --wl-ink-400: oklch(0.646 0 0);
+  --wl-ink-500: oklch(0.537 0 0);
+  --wl-ink-600: oklch(0.437 0 0);
+  --wl-ink-700: oklch(0.336 0 0);
+  --wl-ink-800: oklch(0.236 0 0);
+  --wl-ink-900: oklch(0.152 0 0);
+  --wl-ink-950: oklch(0.094 0 0);
+  --wl-ink-1000: oklch(0 0 0);
+
+  /* ---- semantic roles (light) ---- */
+  --wl-surface: var(--wl-ink-000);
+  --wl-surface-raised: var(--wl-ink-050);
+  --wl-text: var(--wl-ink-950);
+  --wl-text-muted: var(--wl-ink-600);
+  --wl-text-subtle: var(--wl-ink-500);
+  --wl-line: oklch(0 0 0 / 0.12);
+  --wl-line-strong: oklch(0 0 0 / 0.24);
+  --wl-focus: var(--wl-ink-950);
+  --wl-scrim: oklch(0 0 0 / 0.32);
+
+  /* ---- glass (light) ---- */
+  --wl-glass-sheer-tint: oklch(1 0 0 / 0.55);
+  --wl-glass-sheer-rim: oklch(1 0 0 / 0.7);
+  --wl-glass-sheer-border: oklch(1 0 0 / 0.5);
+  --wl-glass-panel-tint: oklch(1 0 0 / 0.72);
+  --wl-glass-panel-rim: oklch(1 0 0 / 0.85);
+  --wl-glass-panel-border: oklch(1 0 0 / 0.6);
+  --wl-glass-scrim-tint: oklch(1 0 0 / 0.86);
+  --wl-glass-scrim-rim: oklch(1 0 0 / 0.9);
+  --wl-glass-scrim-border: oklch(1 0 0 / 0.68);
+  --wl-glass-fallback-bg: oklch(0.985 0 0);
+  --wl-glass-fallback-border: oklch(0 0 0 / 0.14);
+
+  --wl-glass-sheer-blur: 20px;
+  --wl-glass-panel-blur: 32px;
+  --wl-glass-scrim-blur: 48px;
+  --wl-glass-sheer-saturate: 180%;
+  --wl-glass-panel-saturate: 160%;
+  --wl-glass-scrim-saturate: 140%;
+  --wl-glass-sheer-shadow: 0 1px 2px oklch(0 0 0 / 0.04), 0 8px 24px oklch(0 0 0 / 0.06);
+  --wl-glass-panel-shadow: 0 2px 6px oklch(0 0 0 / 0.05), 0 16px 48px oklch(0 0 0 / 0.1);
+  --wl-glass-scrim-shadow: 0 4px 12px oklch(0 0 0 / 0.08), 0 32px 80px oklch(0 0 0 / 0.16);
+
+  /* ---- type ---- */
+  --wl-font-display: "Archivo Variable", "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --wl-font-body: "Switzer Variable", "Switzer", "Helvetica Neue", Arial, sans-serif;
+
+  /* ---- motion ---- */
+  --wl-duration-quick: 180ms;
+  --wl-duration-base: 420ms;
+  --wl-duration-slow: 900ms;
+  --wl-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --wl-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---- space & radius ---- */
+  --wl-radius-sm: 0.5rem;
+  --wl-radius-md: 0.875rem;
+  --wl-radius-lg: 1.375rem;
+  --wl-radius-xl: 2rem;
+  --wl-radius-full: 999px;
+
+  --wl-measure: 34rem;
+  --wl-content: 72rem;
+  --wl-wide: 96rem;
+  --wl-gutter: clamp(1.25rem, 4vw, 4rem);
+
+  /* ---- z ---- */
+  --wl-z-stage: 0;
+  --wl-z-content: 10;
+  --wl-z-chrome: 100;
+  --wl-z-panel: 200;
+  --wl-z-modal: 300;
+}
+
+/* Dark: system preference, unless an explicit light choice overrides it. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --wl-surface: var(--wl-ink-950);
+    --wl-surface-raised: var(--wl-ink-900);
+    --wl-text: var(--wl-ink-050);
+    --wl-text-muted: var(--wl-ink-400);
+    --wl-text-subtle: var(--wl-ink-500);
+    --wl-line: oklch(1 0 0 / 0.14);
+    --wl-line-strong: oklch(1 0 0 / 0.28);
+    --wl-focus: var(--wl-ink-000);
+    --wl-scrim: oklch(0 0 0 / 0.56);
+
+    --wl-glass-sheer-tint: oklch(0.15 0 0 / 0.5);
+    --wl-glass-sheer-rim: oklch(1 0 0 / 0.14);
+    --wl-glass-sheer-border: oklch(1 0 0 / 0.1);
+    --wl-glass-panel-tint: oklch(0.17 0 0 / 0.68);
+    --wl-glass-panel-rim: oklch(1 0 0 / 0.18);
+    --wl-glass-panel-border: oklch(1 0 0 / 0.12);
+    --wl-glass-scrim-tint: oklch(0.13 0 0 / 0.84);
+    --wl-glass-scrim-rim: oklch(1 0 0 / 0.2);
+    --wl-glass-scrim-border: oklch(1 0 0 / 0.14);
+    --wl-glass-fallback-bg: oklch(0.19 0 0);
+    --wl-glass-fallback-border: oklch(1 0 0 / 0.16);
+  }
+}
+
+/* Dark: explicit choice. Wins in both directions. */
+:root[data-theme="dark"] {
+  --wl-surface: var(--wl-ink-950);
+  --wl-surface-raised: var(--wl-ink-900);
+  --wl-text: var(--wl-ink-050);
+  --wl-text-muted: var(--wl-ink-400);
+  --wl-text-subtle: var(--wl-ink-500);
+  --wl-line: oklch(1 0 0 / 0.14);
+  --wl-line-strong: oklch(1 0 0 / 0.28);
+  --wl-focus: var(--wl-ink-000);
+  --wl-scrim: oklch(0 0 0 / 0.56);
+
+  --wl-glass-sheer-tint: oklch(0.15 0 0 / 0.5);
+  --wl-glass-sheer-rim: oklch(1 0 0 / 0.14);
+  --wl-glass-sheer-border: oklch(1 0 0 / 0.1);
+  --wl-glass-panel-tint: oklch(0.17 0 0 / 0.68);
+  --wl-glass-panel-rim: oklch(1 0 0 / 0.18);
+  --wl-glass-panel-border: oklch(1 0 0 / 0.12);
+  --wl-glass-scrim-tint: oklch(0.13 0 0 / 0.84);
+  --wl-glass-scrim-rim: oklch(1 0 0 / 0.2);
+  --wl-glass-scrim-border: oklch(1 0 0 / 0.14);
+  --wl-glass-fallback-bg: oklch(0.19 0 0);
+  --wl-glass-fallback-border: oklch(1 0 0 / 0.16);
+}
+
+/*
+ * Reduced motion: collapse duration but keep crossfades. Zeroing every
+ * transition makes the UI snap between states, which is a worse experience
+ * than the animation it replaces.
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --wl-duration-quick: 0ms;
+    --wl-duration-base: 120ms;
+    --wl-duration-slow: 120ms;
+  }
+}

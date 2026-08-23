@@ -1,0 +1,14 @@
+{
+  "name": "@wildlabs/content",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Single source of truth for Wild Labs content — renders as site, as CV, and as the chat's retrieval corpus.",
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf .turbo node_modules"
+  },
+  "dependencies": { "zod": "^4.4.3" },
+  "devDependencies": { "typescript": "^5.9.3" }
+}

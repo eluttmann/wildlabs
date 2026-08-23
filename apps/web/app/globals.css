@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/* Token layer first — theme.css maps these into Tailwind utilities. */
+@import "@wildlabs/tokens/css/tokens.css";
+@import "@wildlabs/tokens/css/theme.css";
+
+/* Component system styles: glass optics and type steps. */
+@import "@wildlabs/ui/css";
+
+/*
+ * next/font injects the real families as CSS variables on <html>. Rebind the
+ * token variables to them so every consumer of --wl-font-* picks up the loaded
+ * faces without knowing where they came from.
+ */
+:root {
+  --wl-font-display: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --wl-font-body: var(--font-switzer), "Helvetica Neue", Arial, sans-serif;
+}
+
+html {
+  /* Lenis drives scroll. Native smooth-scroll on top of it fights for control. */
+  scroll-behavior: auto;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  /*
+   * Explicit, always. The stage renders behind this, so a transparent body
+   * would let the browser's own ground show through and break both themes.
+   */
+  background: var(--wl-surface);
+  color: var(--wl-text);
+  font-family: var(--wl-font-body);
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition:
+    background var(--wl-duration-base) var(--wl-ease-out),
+    color var(--wl-duration-base) var(--wl-ease-out);
+}
+
+/*
+ * The stage lives at z-0 behind everything. Content sits above it and carries
+ * no background of its own — that is what leaves the field visible through the
+ * gaps and gives the glass something to refract.
+ */
+.wl-page {
+  position: relative;
+  z-index: var(--wl-z-content);
+}
+
+::selection {
+  background: var(--wl-text);
+  color: var(--wl-surface);
+}
+
+:focus-visible {
+  outline: 2px solid var(--wl-focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Lenis: the wrapper must not clip, or the fixed stage gets a scroll context. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/*
+ * Print. Everything spatial disappears; what remains is a document.
+ * Selectable text throughout, so a résumé parses in an applicant tracking
+ * system rather than arriving as an unreadable image.
+ */
+@media print {
+  :root {
+    --wl-surface: #fff;
+    --wl-text: #000;
+    --wl-text-muted: #333;
+    --wl-text-subtle: #555;
+    --wl-line: #ddd;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* The stage, the nav, and anything interactive are screen-only. */
+  [data-print="hide"],
+  canvas {
+    display: none !important;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    color: #555;
+    word-break: break-all;
+  }
+
+  @page {
+    margin: 16mm 14mm;
+  }
+}

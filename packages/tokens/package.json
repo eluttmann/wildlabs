@@ -1,0 +1,17 @@
+{
+  "name": "@wildlabs/tokens",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Wild Labs design tokens — the single source of truth for colour, type, motion, glass and space.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./css/tokens.css": "./css/tokens.css",
+    "./css/theme.css": "./css/theme.css"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf .turbo node_modules"
+  },
+  "devDependencies": { "typescript": "^5.9.3" }
+}

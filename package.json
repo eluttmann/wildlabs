@@ -1,0 +1,22 @@
+{
+  "name": "wildlabs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Wild Labs — spatial AI design system and web properties for Eric Luttmann",
+  "packageManager": "pnpm@11.9.0",
+  "engines": { "node": ">=20.11" },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,css,md,json}\"",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "turbo": "^2.10.11",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@wildlabs/ui",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Wild Labs component system — Apple Glass primitives, typography and motion, bound to @wildlabs/tokens.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./css": "./src/styles.css"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf .turbo node_modules"
+  },
+  "dependencies": {
+    "@wildlabs/tokens": "workspace:*",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.4.0"
+  },
+  "peerDependencies": {
+    "motion": "^13.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "typescript": "^5.9.3"
+  }
+}

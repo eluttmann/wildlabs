@@ -1,0 +1,49 @@
+/*
+ * Tailwind v4 theme mapping.
+ *
+ * Exposes the token layer as utilities (`bg-surface`, `text-muted`,
+ * `rounded-lg`, `ease-out`) so component code never reaches for a raw value.
+ * Import order matters: tokens.css must define the variables before @theme
+ * references them.
+ */
+
+@theme {
+  --color-ink-000: var(--wl-ink-000);
+  --color-ink-050: var(--wl-ink-050);
+  --color-ink-100: var(--wl-ink-100);
+  --color-ink-200: var(--wl-ink-200);
+  --color-ink-300: var(--wl-ink-300);
+  --color-ink-400: var(--wl-ink-400);
+  --color-ink-500: var(--wl-ink-500);
+  --color-ink-600: var(--wl-ink-600);
+  --color-ink-700: var(--wl-ink-700);
+  --color-ink-800: var(--wl-ink-800);
+  --color-ink-900: var(--wl-ink-900);
+  --color-ink-950: var(--wl-ink-950);
+  --color-ink-1000: var(--wl-ink-1000);
+
+  --color-surface: var(--wl-surface);
+  --color-surface-raised: var(--wl-surface-raised);
+  --color-text: var(--wl-text);
+  --color-muted: var(--wl-text-muted);
+  --color-subtle: var(--wl-text-subtle);
+  --color-line: var(--wl-line);
+  --color-line-strong: var(--wl-line-strong);
+
+  --font-display: var(--wl-font-display);
+  --font-body: var(--wl-font-body);
+
+  --radius-sm: var(--wl-radius-sm);
+  --radius-md: var(--wl-radius-md);
+  --radius-lg: var(--wl-radius-lg);
+  --radius-xl: var(--wl-radius-xl);
+
+  --ease-out: var(--wl-ease-out);
+  --ease-in-out: var(--wl-ease-in-out);
+
+  --spacing-gutter: var(--wl-gutter);
+
+  --container-measure: var(--wl-measure);
+  --container-content: var(--wl-content);
+  --container-wide: var(--wl-wide);
+}

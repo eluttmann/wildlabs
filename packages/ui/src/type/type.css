@@ -1,0 +1,130 @@
+/*
+ * Type steps.
+ *
+ * Every step names a family, size, leading, weight, tracking, case and — for
+ * Archivo — a width. Setting all seven together is deliberate: a step that
+ * leaves tracking to the caller is not a step, it is a font-size, and caps
+ * without tracking is the single most common way to make a display face look
+ * amateur.
+ */
+
+.wl-type {
+  margin: 0;
+  font-variation-settings: "wght" var(--wl-t-weight), "wdth" var(--wl-t-width, 100);
+  font-weight: var(--wl-t-weight);
+  font-family: var(--wl-t-family);
+  font-size: var(--wl-t-size);
+  line-height: var(--wl-t-leading);
+  letter-spacing: var(--wl-t-tracking);
+  text-transform: var(--wl-t-transform);
+}
+
+.wl-type[data-step="display1"] {
+  --wl-t-family: var(--wl-font-display);
+  --wl-t-size: clamp(2.75rem, 9vw, 8.5rem);
+  --wl-t-leading: 0.92;
+  --wl-t-weight: 800;
+  --wl-t-tracking: 0.1em;
+  --wl-t-transform: uppercase;
+  --wl-t-width: 100;
+  /* Optical correction: tracked caps push the last glyph's sidebearing out. */
+  margin-right: -0.1em;
+  text-wrap: balance;
+}
+
+.wl-type[data-step="display2"] {
+  --wl-t-family: var(--wl-font-display);
+  --wl-t-size: clamp(2rem, 5.5vw, 4.5rem);
+  --wl-t-leading: 0.98;
+  --wl-t-weight: 800;
+  --wl-t-tracking: 0.06em;
+  --wl-t-transform: uppercase;
+  --wl-t-width: 100;
+  margin-right: -0.06em;
+  text-wrap: balance;
+}
+
+/* Compressed. The wordmark and nav brand — Archivo's wdth axis earning its place. */
+.wl-type[data-step="wordmark"] {
+  --wl-t-family: var(--wl-font-display);
+  --wl-t-size: clamp(1rem, 1.6vw, 1.375rem);
+  --wl-t-leading: 1;
+  --wl-t-weight: 800;
+  --wl-t-tracking: 0.04em;
+  --wl-t-transform: uppercase;
+  --wl-t-width: 75;
+}
+
+.wl-type[data-step="title1"] {
+  --wl-t-family: var(--wl-font-display);
+  --wl-t-size: clamp(1.5rem, 2.6vw, 2.25rem);
+  --wl-t-leading: 1.1;
+  --wl-t-weight: 700;
+  --wl-t-tracking: 0.01em;
+  --wl-t-transform: none;
+  --wl-t-width: 100;
+  text-wrap: balance;
+}
+
+.wl-type[data-step="title2"] {
+  --wl-t-family: var(--wl-font-display);
+  --wl-t-size: clamp(1.125rem, 1.8vw, 1.5rem);
+  --wl-t-leading: 1.2;
+  --wl-t-weight: 600;
+  --wl-t-tracking: 0.005em;
+  --wl-t-transform: none;
+  --wl-t-width: 100;
+  text-wrap: balance;
+}
+
+.wl-type[data-step="bodyLarge"] {
+  --wl-t-family: var(--wl-font-body);
+  --wl-t-size: clamp(1.0625rem, 1.3vw, 1.3125rem);
+  --wl-t-leading: 1.5;
+  --wl-t-weight: 400;
+  --wl-t-tracking: 0;
+  --wl-t-transform: none;
+  --wl-t-width: 100;
+  text-wrap: pretty;
+}
+
+.wl-type[data-step="body"] {
+  --wl-t-family: var(--wl-font-body);
+  --wl-t-size: 1.0625rem;
+  --wl-t-leading: 1.55;
+  --wl-t-weight: 400;
+  --wl-t-tracking: 0;
+  --wl-t-transform: none;
+  --wl-t-width: 100;
+  text-wrap: pretty;
+}
+
+.wl-type[data-step="bodySmall"] {
+  --wl-t-family: var(--wl-font-body);
+  --wl-t-size: 0.9375rem;
+  --wl-t-leading: 1.5;
+  --wl-t-weight: 400;
+  --wl-t-tracking: 0;
+  --wl-t-transform: none;
+  --wl-t-width: 100;
+  text-wrap: pretty;
+}
+
+/*
+ * Metadata. Switzer in tracked caps instead of a third family — the tracking
+ * does the work a monospace would without another file on the wire.
+ */
+.wl-type[data-step="label"] {
+  --wl-t-family: var(--wl-font-body);
+  --wl-t-size: 0.6875rem;
+  --wl-t-leading: 1.3;
+  --wl-t-weight: 500;
+  --wl-t-tracking: 0.14em;
+  --wl-t-transform: uppercase;
+  --wl-t-width: 100;
+  margin-right: -0.14em;
+}
+
+.wl-type[data-tone="muted"] { color: var(--wl-text-muted); }
+.wl-type[data-tone="subtle"] { color: var(--wl-text-subtle); }
+.wl-type[data-measure="true"] { max-width: var(--wl-measure); }

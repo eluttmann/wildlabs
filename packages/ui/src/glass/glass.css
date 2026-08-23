@@ -1,0 +1,179 @@
+/*
+ * Apple Glass.
+ *
+ * Four layers, and the effect collapses if any is missing:
+ *
+ *   background   the tint — gives the pane a body so it is an object, not a hole
+ *   backdrop     blur + saturate — the sample of the world behind it
+ *   ::before     the specular rim — a lit top edge and a shaded bottom one.
+ *                This is the layer people skip, and it is the one that makes
+ *                glass read as a solid pane rather than a frosted rectangle.
+ *   ::after      the lens — refraction concentrated at the boundary, where a
+ *                real pane's curvature actually bends light
+ *
+ * Saturate is doing quiet work: real glass slightly intensifies colour passing
+ * through it. Without it, a blur over a photoreal splat capture goes milky and
+ * the whole thing reads as fog.
+ */
+
+.wl-glass {
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--wl-glass-radius, var(--wl-radius-lg));
+  background: var(--wl-glass-tint);
+  border: 1px solid var(--wl-glass-border);
+  box-shadow: var(--wl-glass-shadow);
+  transition:
+    background var(--wl-duration-base) var(--wl-ease-out),
+    border-color var(--wl-duration-base) var(--wl-ease-out),
+    box-shadow var(--wl-duration-base) var(--wl-ease-out);
+}
+
+/*
+ * backdrop-filter goes on the element itself, not a pseudo-element: a
+ * pseudo-element would sample the parent's already-composited output and
+ * double-blur anything stacked behind it.
+ */
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .wl-glass {
+    -webkit-backdrop-filter: blur(var(--wl-glass-blur)) saturate(var(--wl-glass-saturate));
+    backdrop-filter: blur(var(--wl-glass-blur)) saturate(var(--wl-glass-saturate));
+  }
+}
+
+/* Specular rim. Lit from above, as every physical object on screen should be. */
+.wl-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  box-shadow:
+    inset 0 1px 0 0 var(--wl-glass-rim),
+    inset 0 -1px 0 0 oklch(0 0 0 / 0.06);
+}
+
+/*
+ * The lens. A ring of refraction hugging the border, fading to nothing by ~14%
+ * inward — uniform displacement across the whole pane reads as a broken filter,
+ * because a real pane only bends light where it curves.
+ *
+ * Layered strictly on top of blur, never instead of it: Safari and Chrome
+ * sample url() backdrop filters differently and Firefox ignores them, so this
+ * is the layer that is allowed to go missing.
+ */
+@supports (backdrop-filter: url("#wl-refract-panel")) {
+  .wl-glass[data-refract="true"]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 0;
+    -webkit-backdrop-filter: var(--wl-glass-refract);
+    backdrop-filter: var(--wl-glass-refract);
+    -webkit-mask-image: radial-gradient(
+      ellipse 100% 100% at 50% 50%,
+      transparent 86%,
+      #000 100%
+    );
+    mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 86%, #000 100%);
+  }
+}
+
+/* ---- tiers ---- */
+
+.wl-glass[data-tier="sheer"] {
+  --wl-glass-tint: var(--wl-glass-sheer-tint);
+  --wl-glass-rim: var(--wl-glass-sheer-rim);
+  --wl-glass-border: var(--wl-glass-sheer-border);
+  --wl-glass-blur: var(--wl-glass-sheer-blur);
+  --wl-glass-saturate: var(--wl-glass-sheer-saturate);
+  --wl-glass-shadow: var(--wl-glass-sheer-shadow);
+  --wl-glass-refract: url("#wl-refract-sheer");
+}
+
+.wl-glass[data-tier="panel"] {
+  --wl-glass-tint: var(--wl-glass-panel-tint);
+  --wl-glass-rim: var(--wl-glass-panel-rim);
+  --wl-glass-border: var(--wl-glass-panel-border);
+  --wl-glass-blur: var(--wl-glass-panel-blur);
+  --wl-glass-saturate: var(--wl-glass-panel-saturate);
+  --wl-glass-shadow: var(--wl-glass-panel-shadow);
+  --wl-glass-refract: url("#wl-refract-panel");
+}
+
+.wl-glass[data-tier="scrim"] {
+  --wl-glass-tint: var(--wl-glass-scrim-tint);
+  --wl-glass-rim: var(--wl-glass-scrim-rim);
+  --wl-glass-border: var(--wl-glass-scrim-border);
+  --wl-glass-blur: var(--wl-glass-scrim-blur);
+  --wl-glass-saturate: var(--wl-glass-scrim-saturate);
+  --wl-glass-shadow: var(--wl-glass-scrim-shadow);
+  --wl-glass-refract: url("#wl-refract-scrim");
+}
+
+/* ---- interactive ---- */
+
+.wl-glass[data-interactive="true"] {
+  cursor: pointer;
+  transition:
+    background var(--wl-duration-quick) var(--wl-ease-out),
+    border-color var(--wl-duration-quick) var(--wl-ease-out),
+    box-shadow var(--wl-duration-quick) var(--wl-ease-out),
+    transform var(--wl-duration-quick) var(--wl-ease-out);
+}
+
+.wl-glass[data-interactive="true"]:hover {
+  border-color: var(--wl-line-strong);
+  transform: translateY(-1px);
+}
+
+.wl-glass[data-interactive="true"]:active {
+  transform: translateY(0);
+}
+
+.wl-glass:focus-visible {
+  outline: 2px solid var(--wl-focus);
+  outline-offset: 2px;
+}
+
+/*
+ * Reduced transparency. Opaque, higher-contrast border, no blur, no lens.
+ * Some users see this path every time — it is a designed state, not a fallback.
+ */
+@media (prefers-reduced-transparency: reduce) {
+  .wl-glass {
+    background: var(--wl-glass-fallback-bg) !important;
+    border-color: var(--wl-glass-fallback-border) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .wl-glass::after {
+    display: none;
+  }
+}
+
+/* Same treatment where the browser has no backdrop-filter at all. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .wl-glass {
+    background: var(--wl-glass-fallback-bg);
+    border-color: var(--wl-glass-fallback-border);
+  }
+}
+
+/* Print: glass is a screen idea. On paper it is a hairline box. */
+@media print {
+  .wl-glass {
+    background: none !important;
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .wl-glass::before,
+  .wl-glass::after {
+    display: none !important;
+  }
+}
