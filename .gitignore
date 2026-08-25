@@ -36,3 +36,8 @@ pnpm-debug.log*
 
 # vercel
 .vercel
+
+# Next 16 regenerates these agent pointers on every dev run.
+# Project governance lives in the root CLAUDE.md.
+apps/web/AGENTS.md
+apps/web/CLAUDE.md
